@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+  <!-- doing this as create for now -->
+  <form method="POST" action="/recipes/new">
+    <p>
+    <label for="name">Name</label>
+    <input type="text" name="name" value="{{ recipe.name }}" />
+    </p>
+
+    <p>
+    <label for="ingredients">Ingredients</label>
+    <textarea name="ingredients">{{ recipe.print_ingredients() }}</textarea>
+    </p>
+
+    <p>
+    <label for="steps">Steps</label>
+    <textarea name="steps">{{ recipe.print_steps() }}</textarea>
+    </p>
+
+    <input type="submit" label="Save" />
+  </form>
+{% endblock %}
