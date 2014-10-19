@@ -1,5 +1,23 @@
+html {
+    color: #3A4145;
+    text-rendering: optimizelegibility;
+
+}
+
 body {
     margin: 0;
+    font-family: Times, Georgia, serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1;
+    margin-top: 0px;
+    font-family: "Open Sans", sans-serif;
+}
+
+p, blockquote {
+    font-size: 2rem;
+    line-height: 1.6em;
 }
 
 header {
@@ -7,6 +25,7 @@ header {
     width: 100%;
     background: #ccc;
     padding: 5px 15px;
+    border-bottom: 1px solid #666;
 }
 
 #content {

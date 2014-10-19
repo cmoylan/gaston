@@ -6,22 +6,26 @@
 <h1>{{ recipe.name }}</h1>
 
 <h2>Ingredients ---</h2>
-<ul>
-{% for ingredient in recipe.ingredients %}
-  <li>
-    {{ ingredient['quantity'] }}
-    {{ ingredient['unit'] }}
-    {{ ingredient['name'] }}
-  </li>
-{% endfor %}
-</ul>
+<p>
+  <ul>
+    {% for ingredient in recipe.ingredients %}
+    <li>
+      {{ ingredient['quantity'] }}
+      {{ ingredient['unit'] }}
+      {{ ingredient['name'] }}
+    </li>
+    {% endfor %}
+  </ul>
+</p>
 
 <h2>Steps ---</h2>
-<ol>
-{% for step in recipe.steps %}
-  <li>
-    {{ step['step'] }}
-  </li>
-{% endfor %}
-</ol>
+<p>
+  <ol>
+    {% for step in recipe.steps %}
+    <li>
+      {{ step['step'] }}
+    </li>
+    {% endfor %}
+  </ol>
+</p>
 {% endblock %}

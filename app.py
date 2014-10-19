@@ -25,7 +25,8 @@ def recipe_show(id):
 
 
 # TODO: merge new and edit actions
-@app.route('/recipes/new', methods=['POST', 'GET'])
+@app.route('/recipes/new', methods=['GET'])
+@app.route('/recipes', methods=['POST'])
 def recipe_new():
     error = None
     if request.method == 'POST':
@@ -36,17 +37,17 @@ def recipe_new():
         recipe = Recipe()
 
     # request was GET
-    return render_template('recipes/edit.html', recipe=recipe, error=error)
+    return render_template('recipes/new.html', recipe=recipe, error=error)
 
 
-@app.route('/recipes/<int:id>/edit', methods=['POST', 'GET'])
+@app.route('/recipes/<int:id>/edit', methods=['GET'])
+@app.route('/recipes/<int:id>', methods=['POST'])
 def recipe_edit(id):
     error = None
     recipe = Recipe.find(id)
 
     if request.method == 'POST':
-        recipe.update(request.form)
-        if recipe.save():
+        if recipe.update(request.form):
             return redirect(url_for('recipes/edit.html', id=recipe.id))
 
     # request was GET

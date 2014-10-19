@@ -3,7 +3,7 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-  <form method="POST" action="/recipes/{{ recipe.id }}">
+  <form method="POST" action="/recipes">
     <p>
     <label for="name">Name</label>
     <input type="text" name="name" value="{{ recipe.name }}" />
@@ -19,6 +19,6 @@
     <textarea name="steps">{{ recipe.print_steps() }}</textarea>
     </p>
 
-    <input type="submit" label="Save" />
+    <input type="submit" label="Create" />
   </form>
 {% endblock %}

@@ -65,10 +65,13 @@ class Recipe:
         with get_db().transaction():
             # send to database
             collection().store(attrs)
-            if self.id is not None:
-                # delete old record
-                collection().delete(self.id)
-            self.id = collection().last_record_id()
+
+        if self.id is not None:
+            # delete old record
+            #collection().delete(self.id)
+            pass
+
+        self.id = handle.last_record_id()
             #print "id is {0}".format(self.__id)
         return True
 
