@@ -1,27 +1,48 @@
 import json
+from sqlalchemy import ForeignKey
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship, backref
 
-from database import get_db
-# TODO: abstract db stuff
+from database import Base
 
-#recipes = get_db().collection('recipes')
-#if not recipes.exists():
-#    with db.transaction():
-#        recipes.create()
-#
-def collection():
-    return get_db().collection('recipes')
+class Ingredient(Base):
+
+    __tablename__ = 'ingredients'
+
+    id = Column(Integer, primary_key=True)
+    quantity = Column(Integer)
+    unit = Column(String(50))
+    name = Column(String)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'))
+
+    recipe = relationship('Recipe', backref=backref('recipes', order_by=id))
 
 
-class Recipe:
+class Step(Base):
 
-    id = None
+    __tablename__ = 'steps'
+
+    id = Column(Integer, primary_key=True)
+    order = Column(Integer)
+    description = Column(String)
+    recipe_id = Column(Integer, ForeignKey('recipes.id'))
+
+    recipe = relationship('Recipe', backref=backref('recipes', order_by=id))
+
+
+class Recipe(Base):
+
+    __tablename__ = 'recipes'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
     _fields = ['name', 'ingredients', 'steps', '__id']
     _setters = {'ingredients': 'parse_ingredients',
                 'steps': 'parse_steps'}
 
 
     def  __init__(self, attrs={}):
-        self.id = None
         self._set_attrs(attrs)
 
 
@@ -47,8 +68,11 @@ class Recipe:
 
     @classmethod
     def all(cls):
-        recipes = collection().all()
-        return [cls(recipe) for recipe in recipes]
+        #recipes = collection().all()
+        #if recipes is not None:
+        #    return [cls(recipe) for recipe in recipes]
+        #else:
+        return []
 
 
     @classmethod
@@ -71,8 +95,8 @@ class Recipe:
             #collection().delete(self.id)
             pass
 
-        self.id = handle.last_record_id()
-            #print "id is {0}".format(self.__id)
+        self.id = collection().last_record_id()
+        #print "id is {0}".format(self.__id)
         return True
 
 

@@ -1,5 +1,6 @@
 import json
 from flask import Flask, render_template, request, redirect, url_for
+from database import db_session
 
 from models.recipe import Recipe
 
@@ -52,6 +53,11 @@ def recipe_edit(id):
 
     # request was GET
     return render_template('recipes/edit.html', recipe=recipe, error=error)
+
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 
 if __name__ == '__main__':
