@@ -38,7 +38,6 @@ def recipe_new():
         recipe = Recipe()
 
     # request was GET
-    g.new = True
     return render_template('recipes/edit.html', recipe=recipe, error=error)
 
 

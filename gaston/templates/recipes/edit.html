@@ -3,8 +3,9 @@
 {#
 TODO: figure out a better way to do this
 #}
+
 {% block title -%}
-  {% if g.new %}
+  {% if recipe.persisted() %}
     Add a new recipe
   {% else %}
     Editing {{ recipe.name }}
@@ -12,7 +13,7 @@ TODO: figure out a better way to do this
 {% endblock %}
 
 {% block content %}
-  {% if g.new -%}
+  {% if recipe.persisted() -%}
     <form method="POST" action="/recipes" class="recipe">
   {% else %}
     <form method="POST" action="/recipes/{{ recipe.id }}" class="recipe">

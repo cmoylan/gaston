@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, Column, Integer, String
+from sqlalchemy import ForeignKey, Column, Integer, String, inspect
 from sqlalchemy.orm import relationship, backref
 
 from database import Base, db_session
@@ -29,6 +29,10 @@ class GastonBase():
         """Persists the model to the database"""
         db_session.add(self)
         return db_session.commit()
+
+
+    def persisted(self):
+        return inspect(self).persistent
 
 
     def _set_attrs(self, attrs):
