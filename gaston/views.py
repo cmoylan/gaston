@@ -1,21 +1,19 @@
-import json
-from flask import Flask, render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, g, flash
 from database import db_session
 
-from models.recipe import Recipe
-
-
-app = Flask(__name__)
+from gaston import app
+from models import Recipe, Ingredient
 
 
 @app.route('/')
 def root():
-    return 'Hello World!'
+    return 'do it'
 
 
 @app.route('/recipes')
 def recipe_index():
     recipes = Recipe.all()
+    flash('Got all recipes')
     return render_template('recipes/index.html', recipes=recipes)
 
 
@@ -26,19 +24,22 @@ def recipe_show(id):
 
 
 # TODO: merge new and edit actions
+# TODO: new/edit are essentially the same, and create/update are as well
 @app.route('/recipes/new', methods=['GET'])
 @app.route('/recipes', methods=['POST'])
 def recipe_new():
     error = None
     if request.method == 'POST':
         recipe = Recipe(request.form)
-        if recipe.save():
-            return redirect(url_for('recipe_show', id=recipe.id))
+        recipe.save()
+        #if recipe.save():
+        return redirect(url_for('recipe_show', id=recipe.id))
     else:
         recipe = Recipe()
 
     # request was GET
-    return render_template('recipes/new.html', recipe=recipe, error=error)
+    g.new = True
+    return render_template('recipes/edit.html', recipe=recipe, error=error)
 
 
 @app.route('/recipes/<int:id>/edit', methods=['GET'])
@@ -48,18 +49,27 @@ def recipe_edit(id):
     recipe = Recipe.find(id)
 
     if request.method == 'POST':
-        if recipe.update(request.form):
-            return redirect(url_for('recipes/edit.html', id=recipe.id))
+        #if recipe.update(request.form):
+        recipe.update(request.form)
+        recipe.save()
+        return redirect(url_for('recipe_show', id=recipe.id))
 
     # request was GET
     return render_template('recipes/edit.html', recipe=recipe, error=error)
 
 
+# TODO: don't use GET for this
+@app.route('/recipes/<int:id>/delete', methods=['POST', 'DELETE', 'GET'])
+def recipe_delete(id):
+    recipe = Recipe.find(id)
+    if recipe is None: abort(404)
+
+    recipe.destroy()
+
+    return redirect(url_for('recipe_index'))
+
+
+
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
-
-
-if __name__ == '__main__':
-    app.debug = True
-    app.run()

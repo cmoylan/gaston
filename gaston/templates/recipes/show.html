@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}Recipe {{ recipe.name }}{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="large-12 columns">
+      <h1>{{ recipe.name }}</h1>
+      <a href="{{ url_for('recipe_edit', id=recipe.id) }}">Edit</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <h2>Ingredients ---</h2>
+      
+      <ul>
+	{% for ingredient in recipe.ingredients %}
+	  <li>
+	    {{ ingredient.quantity }}
+	    {{ ingredient.unit }}
+	    {{ ingredient.name }}
+	  </li>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <h2>Steps ---</h2>
+
+      <ol>
+	{% for step in recipe.steps %}
+	  <li>
+	    {{ step.description }}
+	  </li>
+	{% endfor %}
+      </ol>
+    </div>
+  </div>
+{% endblock %}

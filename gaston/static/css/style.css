@@ -1,3 +1,9 @@
+.flashes {
+    margin-top: 15px;
+}
+
+/* --- Reset --- */
+/*
 html {
     color: #3A4145;
     text-rendering: optimizelegibility;
@@ -16,10 +22,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p, blockquote {
-    font-size: 2rem;
-    line-height: 1.6em;
+    font-size: 1.2rem;
+    line-height: 135%;
 }
 
+/* --- Page layout --- */
+/*
 header {
     display: block;
     width: 100%;
@@ -28,6 +36,16 @@ header {
     border-bottom: 1px solid #666;
 }
 
-#content {
+.content {
     padding: 5px 15px;
 }
+
+/* --- Recipe-specific --- */
+/*form.recipe label {
+    display: block;
+}
+
+textarea[name="ingredients"] {
+    width: 500px;
+    height: 300px;
+}*/

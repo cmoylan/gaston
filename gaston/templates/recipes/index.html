@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Recipes{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="large-12 columns">
+      <h1>Recipes</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <ul>
+	{% for recipe in recipes %}
+	  <li>
+	    <a href="{{ url_for('recipe_show', id=recipe.id) }}">
+	      {{ recipe.name }}
+	    </a>
+	    -
+	    <a href="{{ url_for('recipe_edit', id=recipe.id) }}">Edit</a>
+	    {# FIXME: pop up a confirm #}
+	    <a href="{{ url_for('recipe_delete', id=recipe.id) }}">Delete</a>
+	  </li>
+	{% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}

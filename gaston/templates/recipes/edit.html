@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{#
+TODO: figure out a better way to do this
+#}
+{% block title -%}
+  {% if g.new %}
+    Add a new recipe
+  {% else %}
+    Editing {{ recipe.name }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% if g.new -%}
+    <form method="POST" action="/recipes" class="recipe">
+  {% else %}
+    <form method="POST" action="/recipes/{{ recipe.id }}" class="recipe">
+  {% endif %}
+  <div class="row">
+    <div class="large-12 columns">
+      <label for="name">Name
+	<input type="text" name="name" value="{{ recipe.name }}" />
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+      <label for="ingredients">Ingredients
+	<textarea name="ingredients">
+	  {%- for ingredient in recipe.ingredients %}
+{{ ingredient.display() }}
+          {%- endfor %}
+	</textarea>
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-12 columns">
+    <label for="steps">Steps
+      <textarea name="steps">
+	{%- for step in recipe.steps %}
+{{ step.display() }}
+	{%- endfor %}
+      </textarea>
+    </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-2 columns">
+      <input role="button" type="submit" label="Save" class="button radius" />
+    </div>
+  </div>
+  
+  </form>
+{% endblock %}
