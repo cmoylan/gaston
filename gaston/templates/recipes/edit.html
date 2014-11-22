@@ -1,23 +1,25 @@
 {% extends "layout.html" %}
 
-{#
-TODO: figure out a better way to do this
-#}
-
 {% block title -%}
   {% if recipe.persisted() %}
-    Add a new recipe
-  {% else %}
     Editing {{ recipe.name }}
+  {% else %}
+    Add a new recipe    
   {% endif %}
 {% endblock %}
 
 {% block content %}
-  {% if recipe.persisted() -%}
-    <form method="POST" action="/recipes" class="recipe">
-  {% else %}
-    <form method="POST" action="/recipes/{{ recipe.id }}" class="recipe">
-  {% endif %}
+  <form method="POST"
+	enctype="multipart/form-data"
+	action="
+	{% if recipe.persisted() -%}
+	  /recipes/{{ recipe.id }}
+	{% else -%}
+	  /recipes
+	{% endif -%}
+	"
+	class="recipe">
+
   <div class="row">
     <div class="large-12 columns">
       <label for="name">Name
@@ -50,6 +52,13 @@ TODO: figure out a better way to do this
     </div>
   </div>
 
+  <div class="row">
+    <div class="large-12 columns">
+      
+      <input type="file" name="photo" />
+    </div>
+  </div>
+  
   <div class="row">
     <div class="large-2 columns">
       <input role="button" type="submit" label="Save" class="button radius" />

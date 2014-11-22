@@ -1,9 +1,16 @@
 from flask import render_template, request, redirect, url_for, g, flash
+from flaskext.uploads import UploadSet, IMAGES, configure_uploads, UploadNotAllowed
+
 from database import db_session
-
 from gaston import app
-from models import Recipe, Ingredient
+from models import Recipe
 
+# --- upload stuff --- #
+# TODO: move out of here
+app.config['UPLOADED_PHOTO_DEST'] = '/tmp/photos'
+uploaded_photos = UploadSet('photo', IMAGES)
+configure_uploads(app, uploaded_photos)
+# --- upload stuff --- #
 
 @app.route('/')
 def root():
@@ -23,17 +30,25 @@ def recipe_show(id):
     return render_template('recipes/show.html', recipe=recipe)
 
 
-# TODO: merge new and edit actions
-# TODO: new/edit are essentially the same, and create/update are as well
 @app.route('/recipes/new', methods=['GET'])
 @app.route('/recipes', methods=['POST'])
 def recipe_new():
     error = None
     if request.method == 'POST':
         recipe = Recipe(request.form)
-        recipe.save()
+        # --- remove --- #
+        photo = request.files.get('photo')
+        try:
+            import pdb; pdb.set_trace()
+            filename = uploaded_photos.save(photo)
+        except UploadNotAllowed:
+            flash("The upload failed")
+        else:
+            recipe.photo_filename = filename
+            recipe.save()
+            flash("Recipe saved!")
+            return redirect(url_for('recipe_show', id=recipe.id))
         #if recipe.save():
-        return redirect(url_for('recipe_show', id=recipe.id))
     else:
         recipe = Recipe()
 

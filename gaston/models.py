@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, Column, Integer, String, inspect
+from sqlalchemy import ForeignKey, Column, Integer, String, DateTime, func, inspect
 from sqlalchemy.orm import relationship, backref
 
 from database import Base, db_session
@@ -101,6 +101,8 @@ class Recipe(Base, GastonBase):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    photo_filename = Column(String)
+    created_at = Column(DateTime, default=func.now())
     ingredients = relationship('Ingredient',
                                order_by='asc(Ingredient.number)',
                                primaryjoin='Ingredient.recipe_id==Recipe.id',
