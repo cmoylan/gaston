@@ -7,7 +7,8 @@
     <div class="large-12 columns">
       <h1>{{ recipe.name }}</h1>
       <a href="{{ url_for('recipe_edit', id=recipe.id) }}">Edit</a>
-      <img src="{{ uploaded_photos.url(recipe.photo_filename) }}" />
+      {# TODO: make a method to return the correct path #}
+      <img src="{{ url_for('static', filename= 'uploads/'+recipe.photo_filename) }}" />
     </div>
   </div>
 

@@ -1,3 +1,4 @@
+import os
 from flask import render_template, request, redirect, url_for, g, flash
 from flaskext.uploads import UploadSet, IMAGES, configure_uploads, UploadNotAllowed
 
@@ -7,10 +8,16 @@ from models import Recipe
 
 # --- upload stuff --- #
 # TODO: move out of here
-app.config['UPLOADED_PHOTO_DEST'] = '/tmp/photos'
+root_dir = os.path.dirname(__file__)
+upload_dir = filename = os.path.join(root_dir, 'static/uploads')
+
+app.config['UPLOADED_PHOTO_DEST'] = upload_dir
+
 uploaded_photos = UploadSet('photo', IMAGES)
 configure_uploads(app, uploaded_photos)
 # --- upload stuff --- #
+
+import pdb
 
 @app.route('/')
 def root():
@@ -39,12 +46,11 @@ def recipe_new():
         # --- remove --- #
         photo = request.files.get('photo')
         try:
-            import pdb; pdb.set_trace()
             filename = uploaded_photos.save(photo)
+            recipe.photo_filename = filename
         except UploadNotAllowed:
             flash("The upload failed")
         else:
-            recipe.photo_filename = filename
             recipe.save()
             flash("Recipe saved!")
             return redirect(url_for('recipe_show', id=recipe.id))
